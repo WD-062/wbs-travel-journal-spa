@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { toast } from 'react-toastify';
+import { signin } from '@/data';
 
 const Login = () => {
   const [{ email, password }, setForm] = useState({
@@ -16,7 +17,9 @@ const Login = () => {
       e.preventDefault();
       if (!email || !password) throw new Error('All fields are required');
       setLoading(true);
-      console.log(email, password);
+      // console.log(email, password);
+      const { message } = await signin({ email, password });
+      toast.success(message || 'Welcome back');
     } catch (error) {
       toast.error(error.message);
     } finally {

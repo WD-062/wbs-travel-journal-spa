@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router';
 import { ToastContainer } from 'react-toastify';
 import { Navbar } from '@/components';
-import 'react-toastify/dist/ReactToastify.css';
+// import 'react-toastify/dist/ReactToastify.css';
 
 const RootLayout = () => {
   return (

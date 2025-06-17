@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { toast } from 'react-toastify';
+import { signup } from '@/data';
 
 const Register = () => {
   const [{ firstName, lastName, email, password, confirmPassword }, setForm] = useState({
@@ -21,7 +22,10 @@ const Register = () => {
         throw new Error('All fields are required');
       if (password !== confirmPassword) throw new Error('Passwords do not match');
       setLoading(true);
-      console.log(firstName, lastName, email, password, confirmPassword);
+      // console.log(firstName, lastName, email, password, confirmPassword);
+      const { message } = await signup({ firstName, lastName, email, password });
+      console.log(message);
+      toast.success(message || 'welcome');
     } catch (error) {
       toast.error(error.message);
     } finally {

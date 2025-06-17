@@ -1,9 +1,12 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, Navigate, useLocation } from 'react-router';
 import { toast } from 'react-toastify';
 import { signin } from '@/data';
+import { useAuth } from '@/context';
 
 const Login = () => {
+  const location = useLocation();
+  const { isAuthenticated, setCheckSession, setIsAuthenticated } = useAuth();
   const [{ email, password }, setForm] = useState({
     email: '',
     password: ''
@@ -20,6 +23,8 @@ const Login = () => {
       // console.log(email, password);
       const { message } = await signin({ email, password });
       toast.success(message || 'Welcome back');
+      setIsAuthenticated(true);
+      setCheckSession(true);
     } catch (error) {
       toast.error(error.message);
     } finally {
@@ -27,6 +32,7 @@ const Login = () => {
     }
   };
 
+  if (isAuthenticated) return <Navigate to={location.state?.next || '/'} />;
   return (
     <form className='my-5 md:w-1/2 mx-auto flex flex-col gap-3' onSubmit={handleSubmit}>
       <label className='input input-bordered flex items-center gap-2'>

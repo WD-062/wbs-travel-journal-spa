@@ -1,6 +1,8 @@
 import { Link } from 'react-router';
-
-const PostCard = ({ _id, content, image, title }) => {
+import { useAuth } from '@/context';
+import { EditModal, DeleteModal } from '..';
+const PostCard = ({ _id, content, image, title, author, setPosts }) => {
+  const { user } = useAuth();
   return (
     <div className='card bg-base-100 shadow-xl'>
       <figure className='bg-white h-48'>
@@ -14,6 +16,31 @@ const PostCard = ({ _id, content, image, title }) => {
             Read More
           </Link>
         </button>
+        {user?._id === author._id && (
+          <div className='card-actions justify-center gap-6'>
+            <button
+              onClick={() => document.getElementById(`edit-modal-${_id}`).showModal()}
+              className='btn btn-success'
+            >
+              Edit
+            </button>
+            <EditModal
+              _id={_id}
+              image={image}
+              title={title}
+              content={content}
+              author={author._id}
+              setPosts={setPosts}
+            />
+            <button
+              onClick={() => document.getElementById(`delete-modal-${_id}`).showModal()}
+              className='btn btn-error'
+            >
+              Delete
+            </button>
+            <DeleteModal _id={_id} setPosts={setPosts} />
+          </div>
+        )}
       </div>
     </div>
   );

@@ -34,7 +34,7 @@ function ChatWindow() {
   }, []);
 
   return (
-    <div className='h-screen container mx-auto p-5 flex flex-col justify-between gap-5'>
+    <div className='max-h-[75vh] max-w-[600px] flex flex-col bg-slate-600 rounded-lg'>
       <Chat chatRef={chatRef} messages={messages} />
       <Form chatRef={chatRef} setMessages={setMessages} chatId={chatId} setChatId={setChatId} />
       <ToastContainer autoClose={1500} theme='colored' />

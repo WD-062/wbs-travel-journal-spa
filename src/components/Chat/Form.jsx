@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { toast } from 'react-toastify';
-import { createChat, fetchChat } from '@/data';
+import { createChat, createPersonalChat, fetchChat, fetchPersonalChat } from '@/data';
 import { addOrUpdateMsg } from '@/utils';
+import { useAuth } from '@/context';
 
 const Form = ({ setMessages, chatId, setChatId }) => {
+  const { isAuthenticated } = useAuth();
   const [prompt, setPrompt] = useState('');
   const [loading, setLoading] = useState(false);
   const [isStream, setIsStream] = useState(false);
@@ -35,7 +37,17 @@ const Form = ({ setMessages, chatId, setChatId }) => {
 
       if (isStream) {
         //process stream
-        const response = await fetchChat({ message: prompt, chatId, stream: isStream });
+        const response = isAuthenticated
+          ? await fetchPersonalChat({ message: prompt, chatId, stream: isStream })
+          : await fetchChat({ message: prompt, chatId, stream: isStream });
+
+        // let response;
+
+        // if (isAuthenticated) {
+        //   response = await fetchPersonalChat({ message: prompt, chatId, stream: isStream });
+        // } else {
+        //   response = await fetchChat({ message: prompt, chatId, stream: isStream });
+        // }
         // console.log(response);
         const reader = response.body.getReader();
         const decoder = new TextDecoder();
@@ -69,7 +81,9 @@ const Form = ({ setMessages, chatId, setChatId }) => {
         }
         // after the break
       } else {
-        const response = await createChat({ message: prompt, chatId, stream: isStream });
+        const response = isAuthenticated
+          ? await createPersonalChat({ message: prompt, chatId, stream: isStream })
+          : await createChat({ message: prompt, chatId, stream: isStream });
 
         console.log(response);
 
@@ -89,7 +103,7 @@ const Form = ({ setMessages, chatId, setChatId }) => {
   };
 
   return (
-    <div className='h-1/3 w-full p-8 bg-slate-600 rounded-lg shadow-md'>
+    <div className='h-1/3 w-full p-8 border-t-2'>
       <form onSubmit={handleSubmit}>
         <label className='flex gap-2 items-center my-2'>
           <input
@@ -102,14 +116,14 @@ const Form = ({ setMessages, chatId, setChatId }) => {
           />
           <span>Stream response?</span>
         </label>
-        <textarea
+        <input
           value={prompt}
           onChange={handleChange}
           id='prompt'
           rows='5'
           placeholder='Ask me anything...'
           className='block w-full px-4 py-2 border border-gray-300 rounded-md shadow-xs focus:outline-hidden focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
-        ></textarea>
+        />
         <button id='submit' type='submit' className='mt-4 w-full btn btn-primary' disabled={loading}>
           Submit✨
         </button>

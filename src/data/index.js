@@ -1,6 +1,6 @@
 import { createPost, getPosts, getSinglePost, updatePost, deletePost } from './posts';
 import { me, signin, signup, signout } from './auth';
-import { createChat, getChatHistory, fetchChat } from './gemini';
+import { createChat, getChatHistory, fetchChat, fetchPersonalChat, createPersonalChat } from './gemini';
 
 export {
   createPost,
@@ -14,5 +14,7 @@ export {
   deletePost,
   createChat,
   getChatHistory,
-  fetchChat
+  fetchChat,
+  fetchPersonalChat,
+  createPersonalChat
 };

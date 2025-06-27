@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from 'react-router';
-import { RootLayout, ProtectedLayout } from '@/layouts';
-import { CreatePost, Home, Login, NotFound, Post, Register } from '@/pages';
+import { RootLayout, ProtectedLayout, AdminLayout } from '@/layouts';
+import { CreatePost, Home, Login, NotFound, Post, Register, Dashboard } from '@/pages';
 
 const App = () => (
   <BrowserRouter>
@@ -12,6 +12,9 @@ const App = () => (
         <Route path='post/:id' element={<Post />} />
         <Route path='create' element={<ProtectedLayout />}>
           <Route index element={<CreatePost />} />
+        </Route>
+        <Route path='dashboard' element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
         </Route>
         <Route path='*' element={<NotFound />} />
       </Route>
